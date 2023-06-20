@@ -1,4 +1,13 @@
 const express = require("express");
+const mongoose = require("mongoose");
+mongoose
+  .connect(
+    "mongodb+srv://baptisteribot:PIQlCQMzm1Lg5COi@vieuxgrimoire.qhx7tbn.mongodb.net/?retryWrites=true&w=majority",
+    { useNewUrlParser: true, useUnifiedTopology: true }
+  )
+  .then(() => console.log("Connexion à MongoDB réussie !"))
+  .catch(() => console.log("Connexion à MongoDB échouée !"));
+
 const data = "../Front-End/public/data/data.json";
 
 const app = express();
