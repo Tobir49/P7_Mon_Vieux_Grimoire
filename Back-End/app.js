@@ -58,6 +58,7 @@ app.get("/api/books", (req, res, next) => {
       title: "Mon premier objet",
       imageUrl:
         "https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg",
+      averageRating: 3,
     },
     {
       title: "Mon deuxième objet",
