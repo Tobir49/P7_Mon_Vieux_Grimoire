@@ -51,6 +51,13 @@ app.put("/api/books/:id", (req, res, next) => {
     .catch((error) => res.status(400).json({ error }));
 });
 
+//Requête DELETE pour supprimer un livre :
+app.delete("/api/books/:id", (req, res, next) => {
+  Book.deleteOne({ _id: req.params.id })
+    .then(() => res.status(200).json({ message: "Objet supprimé !" }))
+    .catch((error) => res.status(400).json({ error }));
+});
+
 //Requête GET pour acéder à un seul objet (:id)
 app.get("/api/books/:id", (req, res, next) => {
   Book.findOne({ _id: req.params.id })
