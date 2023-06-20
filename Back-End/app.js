@@ -13,7 +13,7 @@ mongoose
 
 //Création de constante
 const app = express();
-const data = require("../Front-End/public/data/data.json");
+// const data = require("../Front-End/public/data/data.json");
 
 //Méthodes .use :
 app.use(express.json());
@@ -45,18 +45,16 @@ app.post("/api/books", (req, res, next) => {
 });
 
 //Requête GET pour acéder à un seul objet (:id)
-app.get("api/books/:id", (req, res, next) => {
-  Book.findOne({ id: req.params.id })
+app.get("/api/books/:id", (req, res, next) => {
+  Book.findOne({ _id: req.params.id })
     .then((book) => res.status(200).json(book))
     .catch((error) => res.status(404).json({ error }));
 });
 
 //Requête GET pour recevoir les livres
 app.get("/api/books", (req, res, next) => {
-  // const books = { data };
-  // res.status(200).json(books);
   Book.find()
-    .then((books) => res.status(200).json([books]))
+    .then((books) => res.status(200).json(books))
     .catch((error) => res.status(400).json({ error }));
 });
 
