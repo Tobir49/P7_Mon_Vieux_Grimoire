@@ -44,6 +44,13 @@ app.post("/api/books", (req, res, next) => {
     .catch((error) => res.status(400).json({ error }));
 });
 
+//Requête PUT pour la page id
+app.put("/api/books/:id", (req, res, next) => {
+  Book.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id }) //{.., _id:req.params.id} permet de récupérer le bon id pour le modifier
+    .then(() => res.status(200).json({ message: "Objet modifié !" }))
+    .catch((error) => res.status(400).json({ error }));
+});
+
 //Requête GET pour acéder à un seul objet (:id)
 app.get("/api/books/:id", (req, res, next) => {
   Book.findOne({ _id: req.params.id })
