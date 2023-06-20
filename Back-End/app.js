@@ -47,11 +47,22 @@ app.post("/api/books", (req, res, next) => {
 //Requête GET pour recevoir les livres
 app.get("/api/books", (req, res, next) => {
   const books = [
+    // {
+    //   imageUrl: data.imageUrl,
+    //   title: data.title,
+    //   genre: data.genre,
+    //   year: data.year,
+    //   author: data.author,
+    // },
     {
-      id: data.id,
-      imageUrl: data.imageUrl,
-      title: data.title,
-      genre: data.genre,
+      title: "Mon premier objet",
+      imageUrl:
+        "https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg",
+    },
+    {
+      title: "Mon deuxième objet",
+      imageUrl:
+        "https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg",
     },
   ];
   res.status(200).json(books);
