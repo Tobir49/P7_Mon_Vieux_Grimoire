@@ -35,7 +35,14 @@ app.post("/api/books", (req, res, next) => {
 });
 
 app.get("/api/books", (req, res, next) => {
-  const books = [data];
+  const books = [
+    {
+      id: data.id,
+      imageUrl: data.imageUrl,
+      title: data.title,
+      genre: data.genre,
+    },
+  ];
   res.status(200).json(books);
 });
 
