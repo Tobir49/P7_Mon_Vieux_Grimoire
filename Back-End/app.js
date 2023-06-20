@@ -13,7 +13,7 @@ mongoose
 
 //Création de constante
 const app = express();
-const data = "../Front-End/public/data/data.json";
+const data = require("../Front-End/public/data/data.json");
 
 //Méthodes .use :
 app.use(express.json());
@@ -44,32 +44,20 @@ app.post("/api/books", (req, res, next) => {
     .catch((error) => res.status(400).json({ error }));
 });
 
+//Requête GET pour acéder à un seul objet (:id)
+app.get("api/books/:id", (req, res, next) => {
+  Book.findOne({ id: req.params.id })
+    .then((book) => res.status(200).json(book))
+    .catch((error) => res.status(404).json({ error }));
+});
+
 //Requête GET pour recevoir les livres
 app.get("/api/books", (req, res, next) => {
-  const books = [
-    // {
-    //   imageUrl: data.imageUrl,
-    //   title: data.title,
-    //   genre: data.genre,
-    //   year: data.year,
-    //   author: data.author,
-    // },
-    {
-      title: "Mon premier objet",
-      imageUrl:
-        "https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg",
-      averageRating: 3,
-    },
-    {
-      title: "Mon deuxième objet",
-      imageUrl:
-        "https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg",
-    },
-  ];
-  res.status(200).json(books);
-  // Book.find()
-  //   .then((books) => res.status(200).json(books))
-  //   .catch((error) => res.status(400).json({ error }));
+  // const books = { data };
+  // res.status(200).json(books);
+  Book.find()
+    .then((books) => res.status(200).json([books]))
+    .catch((error) => res.status(400).json({ error }));
 });
 
 //Exporter la fonction
