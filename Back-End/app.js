@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const booksRoutes = require("./routes/books");
-const app = express();
+const userRoutes = require("./routes/user");
 
 //Se connecter à la base de donnée Atlas
 mongoose
@@ -12,7 +12,8 @@ mongoose
   .then(() => console.log("Connexion à MongoDB réussie !"))
   .catch(() => console.log("Connexion à MongoDB échouée !"));
 
-app.use(express.json());
+const app = express();
+// app.use(express.json());
 
 //CORS
 app.use((req, res, next) => {
@@ -28,7 +29,8 @@ app.use((req, res, next) => {
   next();
 });
 
-//Router importé depuis books.js
+//Routers (user / books) importés depuis books.js
 app.use("/api/books", booksRoutes);
+app.use("/api/auth", userRoutes);
 
 module.exports = app;
