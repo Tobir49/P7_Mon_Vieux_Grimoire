@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const User = require("../models/User");
 
@@ -41,7 +42,15 @@ exports.login = (req, res, next) => {
             } else {
               res.status(200).json({
                 userId: user._id,
-                token: "TOKEN",
+                //Appeler fonction sign de jsonwebtoken
+                token: jwt.sign(
+                  //Données à encoder dans le token
+                  { userId: user._id },
+                  //Clé secrète pour l'encodage
+                  "RANDOM_TOKEN_SECRET",
+                  //Appliquer une expiration pour token
+                  { expiresIn: "24h" }
+                ),
               });
             }
           })
