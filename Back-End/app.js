@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const Book = require("./models/Book");
+const booksRoutes = require("./routes/books");
+const app = express();
 
 //Se connecter à la base de donnée Atlas
 mongoose
@@ -11,11 +12,6 @@ mongoose
   .then(() => console.log("Connexion à MongoDB réussie !"))
   .catch(() => console.log("Connexion à MongoDB échouée !"));
 
-//Création de constante
-const app = express();
-// const data = require("../Front-End/public/data/data.json");
-
-//Méthodes .use :
 app.use(express.json());
 
 //CORS
@@ -32,45 +28,7 @@ app.use((req, res, next) => {
   next();
 });
 
-//Requête POST pour créer des livres
-app.post("/api/books", (req, res, next) => {
-  delete req.body.id;
-  const book = new Book({
-    ...req.body,
-  });
-  book
-    .save()
-    .then(() => res.status(201).json({ message: "Objet enregistré !" }))
-    .catch((error) => res.status(400).json({ error }));
-});
+//Router importé depuis books.js
+app.use("/api/books", booksRoutes);
 
-//Requête PUT pour la page id
-app.put("/api/books/:id", (req, res, next) => {
-  Book.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id }) //{.., _id:req.params.id} permet de récupérer le bon id pour le modifier
-    .then(() => res.status(200).json({ message: "Objet modifié !" }))
-    .catch((error) => res.status(400).json({ error }));
-});
-
-//Requête DELETE pour supprimer un livre :
-app.delete("/api/books/:id", (req, res, next) => {
-  Book.deleteOne({ _id: req.params.id })
-    .then(() => res.status(200).json({ message: "Objet supprimé !" }))
-    .catch((error) => res.status(400).json({ error }));
-});
-
-//Requête GET pour acéder à un seul objet (:id)
-app.get("/api/books/:id", (req, res, next) => {
-  Book.findOne({ _id: req.params.id })
-    .then((book) => res.status(200).json(book))
-    .catch((error) => res.status(404).json({ error }));
-});
-
-//Requête GET pour recevoir les livres
-app.get("/api/books", (req, res, next) => {
-  Book.find()
-    .then((books) => res.status(200).json(books))
-    .catch((error) => res.status(400).json({ error }));
-});
-
-//Exporter la fonction
 module.exports = app;
