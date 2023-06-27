@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
     const name = file.originalname.split(" ").join("_");
     //On a supprimé les epsaces dans les noms de fichiers pour les remplacer par des '_'
     const extension = MIME_TYPES[file.mimetype];
-    callback(null, name + Date.now() + "." / extension);
+    callback(null, name + Date.now() + "." + extension);
     //On rajouter le nom + la date + l'extension (pour le rendre unique)
   },
 });

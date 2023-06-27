@@ -35,7 +35,7 @@ exports.modifyBook = (req, res, next) => {
       }
     : { ...req.body };
 
-  delete bookObject.userId;
+  delete bookObject._userId;
   Book.findOne({ _id: req.params.id })
     .then((book) => {
       if (book.userId != req.auth.userId) {
