@@ -89,3 +89,9 @@ exports.getBooks = (req, res, next) => {
     .then((books) => res.status(200).json(books))
     .catch((error) => res.status(400).json({ error }));
 };
+
+//Requête POST pour noter un livre
+exports.postRating = (req, res, next) => {};
+
+//Requête GET pour afficher les meilleures notes de livres
+exports.getBestRatings = (req, res, next) => {};
