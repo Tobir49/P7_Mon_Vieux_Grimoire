@@ -91,7 +91,41 @@ exports.getBooks = (req, res, next) => {
 };
 
 //Requête POST pour noter un livre
-exports.postRating = (req, res, next) => {};
+exports.postRating = (req, res, next) => {
+  //Constante qui prend la requête
+  const ratingArray = req.body;
+  //La requête = grade du tableau rating
+  ratingArray.grade = ratingArray.rating;
+  delete ratingArray.rating;
+
+  Book.findOne({ _id: req.params.id })
+    .then((book) => {
+      if (!book) {
+        //Si le livre n'existe pas : page erreur
+        res.status(404).json({ message: "Aucun livre" });
+      } else {
+        //Sinon ajouter la requête
+        const ratingUser = book.ratings.includes(
+          (rating) => rating.userId == req.body.userId
+        );
+        if (ratingUser) {
+          //Si le user existe déjà, alors l'empêcher de noter un livre
+          res
+            .status(404)
+            .json({ message: "Impossible de noter plusieurs fois un livre !" });
+        } else {
+          //Sinon mettre à jour le tableau rating
+          Book.updateOne(
+            { _id: req.params.id },
+            { $push: { ratings: ratingArray } }
+          );
+        }
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({ error });
+    });
+};
 
 //Requête GET pour afficher les meilleures notes de livres
 exports.getBestRatings = (req, res, next) => {};
