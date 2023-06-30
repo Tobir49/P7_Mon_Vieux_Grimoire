@@ -162,4 +162,12 @@ exports.postRating = (req, res, next) => {
 };
 
 //Requête GET pour afficher les meilleures notes de livres
-exports.getBestRatings = (req, res, next) => {};
+exports.getBestRatings = (req, res, next) => {
+  Book.find()
+    //Trier les livres par ordre décroissant (-1)
+    .sort({ averageRating: -1 })
+    //Avoir seulement 3 livres
+    .limit(3)
+    .then((books) => res.status(200).json(books))
+    .catch((error) => res.status(400).json({ error }));
+};
