@@ -122,12 +122,17 @@ exports.postRating = (req, res, next) => {
             .then(() => {
               Book.findOne({ _id: req.params.id })
                 .then((book) => {
+                  //reduce permet de garder 1 seule valeur
                   const averageRatings = book.ratings.reduce(
+                    // acc permet de stocker le résultat
+                    //rating récupère chaque élément rating.grade du tableau
+                    //0 est la valeur initiale de reduce
                     (acc, rating) => acc + rating.grade,
                     0
                   );
                   //Calculer la moyenne
                   book.averageRating =
+                    //Math.round permet ici d'avoir seulement 1 seule décimale après l'entier
                     Math.round((averageRatings / book.ratings.length) * 10) /
                     10;
 
