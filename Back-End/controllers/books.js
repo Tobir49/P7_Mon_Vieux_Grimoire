@@ -118,7 +118,36 @@ exports.postRating = (req, res, next) => {
           Book.updateOne(
             { _id: req.params.id },
             { $push: { ratings: ratingArray } }
-          );
+          )
+            .then(() => {
+              Book.findOne({ _id: req.params.id })
+                .then((book) => {
+                  const averageRatings = book.ratings.reduce(
+                    (acc, rating) => acc + rating.grade,
+                    0
+                  );
+                  //Calculer la moyenne
+                  book.averageRating =
+                    Math.round((averageRatings / book.ratings.length) * 10) /
+                    10;
+
+                  //Mettre à jour le chiffre dans la BdD
+                  Book.updateOne(
+                    { _id: req.params.id },
+                    { averageRating: book.averageRating }
+                  )
+                    .then(() => {
+                      Book.findOne({ _id: req.params.id })
+                        .then((book) => {
+                          res.status(200).json(book);
+                        })
+                        .catch((error) => res.status(404).json({ error }));
+                    })
+                    .catch((error) => res.status(401).json({ error }));
+                })
+                .catch((error) => res.status(404).json({ error }));
+            })
+            .catch((error) => res.status(400).json({ error }));
         }
       }
     })
