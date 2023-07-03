@@ -7,6 +7,7 @@ const MIME_TYPES = {
   "image/png": "png",
 };
 
+//Créer un objet de configuration avec diskStorage (destination et filename)
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
     callback(null, "images");

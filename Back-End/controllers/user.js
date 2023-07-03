@@ -33,6 +33,7 @@ exports.login = (req, res, next) => {
           .json({ message: "Paire identifiant/mot de passe incorrecte" });
       } else {
         bcrypt
+          //Comparer le mdp écrit et celui de la BdD
           .compare(req.body.password, user.password)
           .then((valid) => {
             if (!valid) {

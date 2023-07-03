@@ -16,7 +16,7 @@ mongoose
 const app = express();
 app.use(express.json());
 
-//CORS
+//CORS (ici c'est "accepter de rendre public le back-end" pour l'utiliser dans le front-end)
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(

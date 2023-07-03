@@ -4,8 +4,11 @@ const fs = require("fs");
 
 //Requête POST pour créer des livres
 exports.createBook = (req, res, next) => {
+  //Parser l'objet requête
   const bookObject = JSON.parse(req.body.book);
+  //Supprimer _id (généré par BdD)
   delete bookObject._id;
+  // Supprimer userId (créateur de l'objet) car préfère utiliser token
   delete bookObject.userId;
   const book = new Book({
     ...bookObject,
@@ -26,14 +29,17 @@ exports.createBook = (req, res, next) => {
 
 //Requête PUT pour la page id
 exports.modifyBook = (req, res, next) => {
+  //S'il y a un champ file alors :
   const bookObject = req.file
     ? {
+        //Soit on parse l'objet
         ...JSON.parse(req.body.book),
         imageUrl: `${req.protocol}://${req.get("host")}/images/${
           req.file.filename
         }`,
       }
-    : { ...req.body };
+    : //Soit on récupère l'objet dans le corps de la requête
+      { ...req.body };
 
   delete bookObject._userId;
   Book.findOne({ _id: req.params.id })
