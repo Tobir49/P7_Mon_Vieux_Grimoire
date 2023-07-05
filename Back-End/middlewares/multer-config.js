@@ -23,3 +23,33 @@ const storage = multer.diskStorage({
 });
 
 module.exports = multer({ storage }).single("image");
+
+//Redimensionner image (green code)
+module.exports.resizeImages = (req, res, next) => {
+  //Si aucune image -> ne pas exécuter la fonction
+  if (!req.file) {
+    return next();
+  }
+
+  //Chemin d'accès du fichier
+  const filePath = req.file.path;
+  //Nom du fichier
+  const fileName = req.file.filename;
+  //Joindre le répertoire 'images' avec le fichier redimensionner
+  const resizedImage = path.join("images", `resized_${fileName}`);
+
+  sharp(filePath)
+    .resize({ width: 206, height: 260 })
+    .toFile(resizedImage)
+    .then(() => {
+      //Utiliser le nouveau fichier à la place de celui d'origine
+      fs.unlink(filePath, () => {
+        req.file.path = resizedImage;
+        next();
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      return next();
+    });
+};
