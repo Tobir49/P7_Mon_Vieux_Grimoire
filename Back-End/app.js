@@ -3,13 +3,14 @@ const mongoose = require("mongoose");
 const booksRoutes = require("./routes/books");
 const userRoutes = require("./routes/user");
 const path = require("path");
+require("dotenv").config();
 
 //Se connecter à la base de donnée Atlas
 mongoose
-  .connect(
-    "mongodb+srv://baptisteribot:PIQlCQMzm1Lg5COi@vieuxgrimoire.qhx7tbn.mongodb.net/?retryWrites=true&w=majority",
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  )
+  .connect(process.env.MONGOOSE, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("Connexion à MongoDB réussie !"))
   .catch(() => console.log("Connexion à MongoDB échouée !"));
 

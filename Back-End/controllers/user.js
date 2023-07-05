@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const User = require("../models/User");
 
@@ -48,7 +49,7 @@ exports.login = (req, res, next) => {
                   //Données à encoder dans le token
                   { userId: user._id },
                   //Clé secrète pour l'encodage
-                  "RANDOM_TOKEN_SECRET",
+                  process.env.RANDOM_TOKEN_SECRET,
                   //Appliquer une expiration pour token
                   { expiresIn: "24h" }
                 ),

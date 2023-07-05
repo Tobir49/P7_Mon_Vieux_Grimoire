@@ -7,6 +7,7 @@ const MIME_TYPES = {
   "image/jpg": "jpg",
   "image/jpeg": "jpg",
   "image/png": "png",
+  "image/webp": "webp",
 };
 
 //Créer un objet de configuration avec diskStorage (destination et filename)
@@ -41,6 +42,7 @@ module.exports.resizeImages = (req, res, next) => {
 
   sharp(filePath)
     .resize({ width: 206, height: 260 })
+    .webp({ quality: 20 })
     .toFile(resizedImage)
     .then(() => {
       //Utiliser le nouveau fichier à la place de celui d'origine
