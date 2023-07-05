@@ -1,5 +1,7 @@
 const multer = require("multer");
-// const sharp = require("sharp");
+const sharp = require("sharp");
+const path = require("path");
+const fs = require("fs");
 
 const MIME_TYPES = {
   "image/jpg": "jpg",
@@ -21,7 +23,6 @@ const storage = multer.diskStorage({
     //On rajouter le nom + la date + l'extension (pour le rendre unique)
   },
 });
-
 module.exports = multer({ storage }).single("image");
 
 //Redimensionner image (green code)
